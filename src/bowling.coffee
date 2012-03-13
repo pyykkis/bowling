@@ -1,7 +1,5 @@
 exports.calculate = (game) ->
-  frames(parse game)[0..9].reduce((fs, f) -> fs.concat f).reduce sum
-
-sum = (x, y) -> (x + y)
+  frames(parse game)[0..9].reduce((fs, f) -> fs.concat f).reduce (sum, r) -> (sum + r)
 
 parse = (game) ->
   for char, i in game
@@ -17,7 +15,7 @@ frames = (rolls) ->
   if rolls[0] == 10 # Strike
     [rolls[0..2]].concat frames rolls[1...]
 
-  else if rolls[0..1].reduce(sum) == 10 # Spare
+  else if rolls[0] + rolls[1]  == 10 # Spare
     [rolls[0..2]].concat frames rolls[2...]
 
   else
