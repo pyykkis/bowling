@@ -1,26 +1,31 @@
-exports.calculate = (score) ->
-  score = for s, i in score
+exports.calculate = (game) ->
+  frames(parse game).reduce sum, 0
+
+sum = (x, y) -> (x + y)
+
+parse = (game) ->
+  for s, i in game
     switch s
       when '-' then 0
       when 'X' then 10
-      when '/' then 10 - score[i - 1]
+      when '/' then 10 - game[i - 1]
       else parseInt s
 
-  frames = []
-  while frames.length < 10
+frames = (throws) ->
+  fs = []
+  while fs.length < 10
 
     # Strike
-    if score[0] == 10
-      frames.push score[0] + score[1] + score[2]
-      score = score.slice 1
+    if throws[0] == 10
+      fs.push throws.slice(0, 3).reduce sum, 0
+      throws = throws.slice 1
 
     # Spare
-    else if score[0] + score[1] == 10
-      frames.push score[0] + score[1] + score[2]
-      score = score.slice 2
+    else if throws[0] + throws[1] == 10
+      fs.push throws.slice(0, 3).reduce sum, 0
+      throws = throws.slice 2
 
     else
-      frames.push score[0] + score[1]
-      score = score.slice 2
-
-  frames.reduce ((sum, frame) -> sum + frame), 0
+      fs.push throws.slice(0, 2).reduce sum, 0
+      throws = throws.slice 2
+  fs
