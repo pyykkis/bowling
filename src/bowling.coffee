@@ -1,5 +1,5 @@
 exports.calculate = (game) ->
-  frames(parse game)[0..9].reduce sum
+  frames(parse game)[0..9].reduce((fs, f) -> fs.concat f).reduce sum
 
 sum = (x, y) -> (x + y)
 
@@ -11,14 +11,14 @@ parse = (game) ->
       when '/' then 10 - game[i - 1]
       else parseInt char
 
-frames = (throws) ->
-  return [] unless throws.length
+frames = (rolls) ->
+  return [] unless rolls.length
 
-  if throws[0] == 10 # Strike
-    [throws[0..2].reduce sum].concat frames throws[1...]
+  if rolls[0] == 10 # Strike
+    [rolls[0..2]].concat frames rolls[1...]
 
-  else if throws[0..1].reduce(sum) == 10 # Spare
-    [throws[0..2].reduce sum].concat frames throws[2...]
+  else if rolls[0..1].reduce(sum) == 10 # Spare
+    [rolls[0..2]].concat frames rolls[2...]
 
   else
-    [throws[0..1].reduce sum].concat frames throws[2...]
+    [rolls[0..1]].concat frames rolls[2...]
