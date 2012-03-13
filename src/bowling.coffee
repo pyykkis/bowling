@@ -1,5 +1,5 @@
 exports.calculate = (game) ->
-  frames(parse game).reduce sum, 0
+  frames(parse game)[0..9].reduce sum, 0
 
 sum = (x, y) -> (x + y)
 
@@ -12,20 +12,13 @@ parse = (game) ->
       else parseInt s
 
 frames = (throws) ->
-  fs = []
-  while fs.length < 10
+    return [] unless throws.length
 
-    # Strike
-    if throws[0] == 10
-      fs.push throws.slice(0, 3).reduce sum, 0
-      throws = throws.slice 1
+    if throws[0] == 10 # Strike
+      [throws[0..2].reduce sum, 0].concat frames throws[1...]
 
-    # Spare
-    else if throws[0] + throws[1] == 10
-      fs.push throws.slice(0, 3).reduce sum, 0
-      throws = throws.slice 2
+    else if throws[0..1].reduce(sum, 0) == 10 # Spare
+      [throws[0..2].reduce sum, 0].concat frames throws[2...]
 
     else
-      fs.push throws.slice(0, 2).reduce sum, 0
-      throws = throws.slice 2
-  fs
+      [throws[0..1].reduce sum, 0].concat frames throws[2...]
