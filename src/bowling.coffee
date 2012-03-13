@@ -12,13 +12,13 @@ parse = (game) ->
       else parseInt char
 
 frames = (throws) ->
-    return [] unless throws.length
+  return [] unless throws.length
 
-    if throws[0] == 10 # Strike
-      [throws[0..2].reduce sum].concat frames throws[1...]
+  if throws[0] == 10 # Strike
+    [throws[0..2].reduce sum].concat frames throws[1...]
 
-    else if throws[0..1].reduce(sum) == 10 # Spare
-      [throws[0..2].reduce sum].concat frames throws[2...]
+  else if throws[0..1].reduce(sum) == 10 # Spare
+    [throws[0..2].reduce sum].concat frames throws[2...]
 
-    else
-      [throws[0..1].reduce sum].concat frames throws[2...]
+  else
+    [throws[0..1].reduce sum].concat frames throws[2...]
