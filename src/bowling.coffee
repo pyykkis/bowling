@@ -12,11 +12,14 @@ parse = (game) ->
 frames = (rolls) ->
   return [] unless rolls.length
 
-  if rolls[0] == 10 # Strike
+  if strike(rolls)
     [rolls[0..2]].concat frames rolls[1...]
 
-  else if rolls[0] + rolls[1]  == 10 # Spare
+  else if spare(rolls)
     [rolls[0..2]].concat frames rolls[2...]
 
   else
     [rolls[0..1]].concat frames rolls[2...]
+
+strike = (rolls) -> rolls[0] == 10
+spare  = (rolls) -> rolls[0] + rolls[1] == 10
