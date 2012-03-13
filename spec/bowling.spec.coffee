@@ -10,3 +10,6 @@ describe "Bowling", ->
 
   it "should return 150 for 10 pairs of 5 and spare, with a final 5", ->
     bowling.calculate("5/5/5/5/5/5/5/5/5/5/5").should.equal 150
+
+  it "should return 300 for 12 strikes", ->
+    bowling.calculate("XXXXXXXXXXXX").should.equal 300
